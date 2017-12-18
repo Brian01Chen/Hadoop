@@ -1,0 +1,67 @@
+---
+- name: generate bashrc
+  copy:
+    mode: 0764
+    src: /home/hdp/.bashrc
+    dest: /home/hdp
+    force: yes
+
+- name: active bashrc file
+  shell: source .bashrc chdir=/home/hdp
+  args:
+    executable: /bin/bash
+
+#- name: stop hadoop
+#  local_action: /bin/sh /home/hdp/hadoop-2.8.2/sbin/stop-all.sh
+#  async: 70 #max wait time, go next step if exceed the time
+#  poll: 5   #check the task every five second
+#  ignore_errors: yes
+
+- name: update configure files
+  copy:
+    src: "{{ item }}"
+    dest: /home/hdp/hadoop-2.8.2/etc/hadoop
+    owner: hdp
+    force: yes
+  with_items:
+    - /home/hdp/hadoop-2.8.2/etc/hadoop/core-site.xml
+    - /home/hdp/hadoop-2.8.2/etc/hadoop/hadoop-env.sh
+    - /home/hdp/hadoop-2.8.2/etc/hadoop/hdfs-site.xml
+    - /home/hdp/hadoop-2.8.2/etc/hadoop/mapred-site.xml
+    - /home/hdp/hadoop-2.8.2/etc/hadoop/yarn-site.xml
+    - /home/hdp/hadoop-2.8.2/etc/hadoop/masters
+    - /home/hdp/hadoop-2.8.2/etc/hadoop/slaves
+
+#- name: restart hadoop
+#  local_action: /bin/sh /home/hdp/hadoop-2.8.2/sbin/start-all.sh
+
+- name: output master process
+  local_action: jps
+  register: master_proc
+- name: oupput slaves process
+  command: jps
+  register: slaves_proc
+
+- name: copy mysql-jdbc jar
+  copy:
+    src: /home/hdp/apache-hive-1.2.2-bin/lib/mysql-connector-java-5.1.45-bin.jar
+    dest: /home/hdp/apache-hive-1.2.2-bin/lib
+    force: yes
+
+- name: update hive conf 
+  copy:
+    src: /home/hdp/apache-hive-1.2.2-bin/conf/{{ item }}
+    dest: /home/hdp/apache-hive-1.2.2-bin/conf
+    force: yes 
+  with_items:
+    - hive-default.xml
+    - hive-site-slaves.xml
+
+- name: update hive-site conf
+  command: mv hive-site-slaves.xml hive-site.xml chdir="/home/hdp/apache-hive-1.2.2-bin/conf"
+  register: hsite
+
+- debug: var="master_proc.stdout"
+- debug: var="slaves_proc.stdout"
+- debug: var="hsite.stdout"
+ 

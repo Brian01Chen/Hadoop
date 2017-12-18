@@ -1,0 +1,13 @@
+---
+- name: install ansible ssh key
+  authorized_key:
+    user: hdp
+    key: "{{ lookup('file', '/home/ansible/.ssh/id_rsa.pub') }}"
+    state: present
+
+- name: install hdp ssh key
+  authorized_key:
+    user: hdp
+    key: "{{ lookup('file', '/home/hdp/.ssh/id_rsa.pub') }}"
+    state: present    
+              

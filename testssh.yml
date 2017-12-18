@@ -1,0 +1,10 @@
+---
+- hosts: kvm-014017
+  gather_facts: no
+  remote_user: root
+  tasks:
+    - name: install ansible ssh key
+      authorized_key:
+        user: root
+        key: "{{ lookup('file', '/home/ansible/.ssh/id_rsa.pub') }}"
+        state: present

@@ -1,0 +1,58 @@
+---
+- name: install ansible ssh key
+  authorized_key:
+    user: root
+    key: "{{ lookup('file', '/home/ansible/.ssh/id_rsa.pub') }}"
+    state: present
+
+- name: update hosts file
+  copy:
+    src: /etc/hosts
+    dest: /etc/hosts
+    force: yes
+
+- name: install jdk/jre
+  apt:
+    name: "{{ item }}"
+    state: present
+    force: yes
+  with_items:
+    - openjdk-7-jre-headless
+    - openjdk-7-jdk
+
+- name: create hdp group
+  group:
+    name: hdp
+    state: present
+- name: create hdp user 
+  user:
+    name: hdp
+    #password: "{{ new_pass | password_hash('sha512')}}"
+    password: hatZwEtbmURfQ
+    update_password: always
+    group: hdp
+    generate_ssh_key: yes
+    createhome: yes
+    home: /home/hdp
+    state: present
+   
+- name: install ansible
+  apt:
+    name: "{{ item }}"
+    state: present
+    force: yes   
+  with_items:
+    - ansible
+    - python-dev
+
+- name: create ansible user
+  user:
+    name: ansible
+    #password: "{{ new_pass | password_hash('sha512')}}"
+    password: hatZwEtbmURfQ
+    update_password: always
+    group: hdp
+    generate_ssh_key: yes
+    createhome: yes
+    home: /home/ansible
+    state: present

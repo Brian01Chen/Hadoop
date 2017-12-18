@@ -1,0 +1,31 @@
+---
+- hosts: hadoop
+  remote_user: root
+  gather_facts: no
+  roles:
+    - prepare
+  tags: prepare
+
+- hosts: hadoop
+  remote_user: hdp
+  gather_facts: no
+  roles:
+    - install
+  tags: install
+
+- hosts: hadoop
+  remote_user: hdp
+  gather_facts: no
+  roles:
+    - setupenv
+  tags: setupenv
+
+- hosts: localhost
+  gather_facts: no
+  tasks:
+  - name: stop hadoop
+    shell: /home/hdp/hadoop-2.8.2/sbin/stop-all.sh
+    ignore_errors: yes
+  - name: restart hadoop
+    shell: /home/hdp/hadoop-2.8.2/sbin/start-all.sh
+  tags: setupenv 
