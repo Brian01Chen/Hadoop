@@ -19,6 +19,48 @@
   with_items:
     - openjdk-7-jre-headless
     - openjdk-7-jdk
+- name: create soft folder
+  file:
+    name: /root/soft
+    state: directory
+    mode: 0644
+
+- name: copy jdk file
+  copy:
+    src: jdk-8u151-linux-x64.tar.gz
+    dest: /root/soft
+    force: yes
+
+- name: uncompress oracle jdk
+  command: tar -xzvf jdk-8u151-linux-x64.tar.gz 
+  args:
+    chdir: /root/soft
+    creates: jdk1.8.0_151  
+
+- name: copy jdk file
+  command: cp -R /root/soft/jdk1.8.0_151/ /usr/lib/jvm
+  args:
+    creates: /usr/lib/jvm/jdk1.8.0_151
+
+- name: copy /etc/profile
+  copy:
+   src: /etc/profile
+   dest: /etc
+   force: yes
+
+- name: source /etc/profile
+  shell: source /etc/profile
+  args:
+    executable: /bin/bash
+ 
+- name: install mysql-client
+  apt:
+    name: "{{ item }}"
+    state: present
+    force: yes
+  with_items:
+    - mysql-client
+    - libmysqlclient-dev
 
 - name: create hdp group
   group:
@@ -56,3 +98,11 @@
     createhome: yes
     home: /home/ansible
     state: present
+
+- name: create app folder
+  file:
+    name: /usr/app/
+    group: hdp
+    owner: hdp
+    state: directory
+    force: yes

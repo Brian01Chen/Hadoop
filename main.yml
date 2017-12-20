@@ -20,12 +20,12 @@
     - setupenv
   tags: setupenv
 
-- hosts: localhost
-  gather_facts: no
-  tasks:
-  - name: stop hadoop
-    shell: /home/hdp/hadoop-2.8.2/sbin/stop-all.sh
-    ignore_errors: yes
-  - name: restart hadoop
-    shell: /home/hdp/hadoop-2.8.2/sbin/start-all.sh
-  tags: setupenv 
+#- hosts: localhost
+#  gather_facts: no
+#  tasks:
+#  - name: stop hadoop
+#    shell: /home/hdp/hadoop-2.8.2/sbin/stop-all.sh
+#    ignore_errors: yes
+#  - name: restart hadoop
+#    shell: /home/hdp/hadoop-2.8.2/sbin/start-all.sh
+#  tags: setupenv 

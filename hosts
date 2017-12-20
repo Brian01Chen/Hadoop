@@ -2,9 +2,13 @@
 #hdp1 ansible_ssh_host=9.111.111.139 ansible_ssh_port=22 ansible_ssh_user=hdp
 #hdp2 ansible_ssh_host=9.111.139.146 ansible_ssh_port=22 ansible_ssh_user=hdp
 9.111.111.139
-9.111.139.146
 9.111.139.139
 9.111.139.36
+9.111.215.250
+9.111.215.249
+9.111.215.247
+
+
 
 [localhost]
 9.111.121.159

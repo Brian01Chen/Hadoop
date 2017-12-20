@@ -11,57 +11,75 @@
   args:
     executable: /bin/bash
 
-#- name: stop hadoop
+#- name: stop hadoopd
 #  local_action: /bin/sh /home/hdp/hadoop-2.8.2/sbin/stop-all.sh
 #  async: 70 #max wait time, go next step if exceed the time
 #  poll: 5   #check the task every five second
 #  ignore_errors: yes
 
-- name: update configure files
+- name: update hadoop configure files
   copy:
     src: "{{ item }}"
-    dest: /home/hdp/hadoop-2.8.2/etc/hadoop
+    dest: "{{ hadoop_conf }}"
     owner: hdp
     force: yes
   with_items:
-    - /home/hdp/hadoop-2.8.2/etc/hadoop/core-site.xml
-    - /home/hdp/hadoop-2.8.2/etc/hadoop/hadoop-env.sh
-    - /home/hdp/hadoop-2.8.2/etc/hadoop/hdfs-site.xml
-    - /home/hdp/hadoop-2.8.2/etc/hadoop/mapred-site.xml
-    - /home/hdp/hadoop-2.8.2/etc/hadoop/yarn-site.xml
-    - /home/hdp/hadoop-2.8.2/etc/hadoop/masters
-    - /home/hdp/hadoop-2.8.2/etc/hadoop/slaves
+    - "{{ hadoop_conf }}/core-site.xml"
+    - "{{ hadoop_conf }}/hadoop-env.sh"
+    - "{{ hadoop_conf }}/hdfs-site.xml"
+    - "{{ hadoop_conf }}/mapred-site.xml"
+    - "{{ hadoop_conf }}/yarn-site.xml"
+    - "{{ hadoop_conf }}/masters"
+    - "{{ hadoop_conf }}/slaves"
+
+- name: update hbase configure files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ hbase_conf }}"
+    owner: hdp
+    force: yes
+  with_items:
+    - "{{ hbase_conf }}/hbase-env.sh"
+    - "{{ hbase_conf }}/hbase-site.xml"
+    - "{{ hbase_conf }}/regionservers"
 
 #- name: restart hadoop
 #  local_action: /bin/sh /home/hdp/hadoop-2.8.2/sbin/start-all.sh
 
-- name: output master process
-  local_action: jps
-  register: master_proc
-- name: oupput slaves process
-  command: jps
-  register: slaves_proc
 
 - name: copy mysql-jdbc jar
   copy:
-    src: /home/hdp/apache-hive-1.2.2-bin/lib/mysql-connector-java-5.1.45-bin.jar
-    dest: /home/hdp/apache-hive-1.2.2-bin/lib
+    src: "{{ hive_home }}/lib/mysql-connector-java-5.1.45-bin.jar"
+    dest: "{{ hive_home }}/lib"
     force: yes
 
 - name: update hive conf 
   copy:
-    src: /home/hdp/apache-hive-1.2.2-bin/conf/{{ item }}
-    dest: /home/hdp/apache-hive-1.2.2-bin/conf
+    src: "{{ item }}"
+    dest: "{{ hive_conf }}"
     force: yes 
   with_items:
-    - hive-default.xml
-    - hive-site-slaves.xml
+    - "{{ hive_conf }}/hive-default.xml"
+    - "{{ hive_conf }}/hive-site-slaves.xml"
 
 - name: update hive-site conf
-  command: mv hive-site-slaves.xml hive-site.xml chdir="/home/hdp/apache-hive-1.2.2-bin/conf"
-  register: hsite
+  command: mv hive-site-slaves.xml hive-site.xml chdir={{ hive_conf }}
 
-- debug: var="master_proc.stdout"
+- name: create zookeeper data folder
+  file:
+    name: /usr/app/zookeeper
+    state: directory
+    force: yes
+
+- name: update zookeep conf
+  copy:
+    src: "{{ zoo_conf }}/zoo.cfg"
+    dest: "{{ zoo_conf }}"
+    force: yes
+    
+- name: output slaves process
+  command: /usr/bin/jps
+  register: slaves_proc
 - debug: var="slaves_proc.stdout"
-- debug: var="hsite.stdout"
+
  

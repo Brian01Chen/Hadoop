@@ -1,0 +1,7 @@
+hadoop_home: /home/hdp/hadoop-2.8.2
+hadoop_conf: /home/hdp/hadoop-2.8.2/etc/hadoop
+hive_home: /home/hdp/apache-hive-1.2.2-bin
+hive_conf: /home/hdp/apache-hive-1.2.2-bin/conf
+hbase_home: /home/hdp/hbase-1.3.1
+hbase_conf: /home/hdp/hbase-1.3.1/conf
+zoo_conf: /home/hdp/zookeeper-3.3.6/conf

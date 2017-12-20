@@ -51,3 +51,40 @@
     chdir: /home/hdp/soft
   when: output_hbase.stdout.find('skip') == -1
   ignore_errors: yes
+
+- name: download zookeeper
+  command: wget http://mirror.bit.edu.cn/apache/zookeeper/zookeeper-3.3.6/zookeeper-3.3.6.tar.gz
+  args:
+    chdir: /home/hdp/soft
+    creates: zookeeper-3.3.6.tar.gz
+  register: output_zoo
+- name: uncompress tar files - zookeeper
+  command: tar -xzvf zookeeper-3.3.6.tar.gz -C ..
+  args: 
+    chdir: /home/hdp/soft
+  when: output_zoo.stdout.find('skip') == -1
+  ignore_errors: yes
+
+- name: create zoo folders
+  file:
+    name: "{{ item }}"
+    state: directory
+    force: no
+    recurse: yes
+    owner: hdp
+  with_items:
+    - /usr/app/zookeeper/data
+    - /usr/app/zookeeper/logs
+
+- name: download sqoop
+  command: wget http://mirror.bit.edu.cn/apache/sqoop/1.4.6/sqoop-1.4.6.tar.gz
+  args:
+    chdir: /home/hdp/soft
+    creates: sqoop-1.4.6.tar.gz
+  register: output_sqoop
+- name: uncompress tar files - sqoop
+  command: tar -xzvf sqoop-1.4.6.tar.gz -C ..
+  args:
+    chdir: /home/hdp/soft
+  when: output_sqoop.stdout.find('skip') == -1
+  ignore_errors: yes
