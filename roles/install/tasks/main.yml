@@ -9,22 +9,22 @@
     state: directory
     force: yes
 - name: download hadoop
-  command: wget http://www-eu.apache.org/dist/hadoop/common/hadoop-2.8.2/hadoop-2.8.2.tar.gz
+  command: wget http://www-eu.apache.org/dist/hadoop/common/hadoop-{{ hadoop_version }}/hadoop-{{ hadoop_version }}.tar.gz
   args:
     chdir: /home/hdp/soft
-    creates: hadoop-2.8.2.tar.gz
+    creates: hadoop-{{ hadoop_version }}.tar.gz
   register: output_hadoop
 - name: download hive
-  command: wget http://www-eu.apache.org/dist/hive/hive-1.2.2/apache-hive-1.2.2-bin.tar.gz
+  command: wget http://www-eu.apache.org/dist/hive/hive-{{ hive_version }}/apache-hive-{{ hive_version }}-bin.tar.gz
   args:
     chdir: /home/hdp/soft
-    creates: apache-hive-1.2.2-bin.tar.gz
+    creates: apache-hive-{{ hive_version }}-bin.tar.gz
   register: output_hive
 - name: download hbase
-  command: wget http://www-eu.apache.org/dist/hbase/1.3.1/hbase-1.3.1-bin.tar.gz
+  command: wget http://www-eu.apache.org/dist/hbase/{{ hbase_version }}/hbase-{{ hbase_version }}-bin.tar.gz
   args:
     chdir: /home/hdp/soft
-    creates: hbase-1.3.1-bin.tar.gz
+    creates: hbase-{{ hbase_version }}-bin.tar.gz
   register: output_hbase
 
 - debug: var="{{ output_hadoop.stdout}}"
@@ -32,34 +32,34 @@
 - debug: var="{{ output_hbase.stdout}}"
   
 - name: uncompress tar files - hadoop
-  command: tar -xzvf hadoop-2.8.2.tar.gz -C ..
+  command: tar -xzvf hadoop-{{ hadoop_version }}.tar.gz -C ..
   args:
     chdir: /home/hdp/soft
   when: output_hadoop.stdout.find('skip') == -1
   ignore_errors: yes 
 
 - name: uncompress tar files - hive
-  command: tar -xzvf apache-hive-1.2.2-bin.tar.gz -C ..
+  command: tar -xzvf apache-hive-{{ hive_version }}-bin.tar.gz -C ..
   args:
     chdir: /home/hdp/soft
   when: output_hive.stdout.find('skip') == -1
   ignore_errors: yes
 
 - name: uncompress tar files - hbase
-  command: tar -xzvf hbase-1.3.1-bin.tar.gz -C ..
+  command: tar -xzvf hbase-{{ hbase_version }}-bin.tar.gz -C ..
   args:
     chdir: /home/hdp/soft
   when: output_hbase.stdout.find('skip') == -1
   ignore_errors: yes
 
 - name: download zookeeper
-  command: wget http://mirror.bit.edu.cn/apache/zookeeper/zookeeper-3.3.6/zookeeper-3.3.6.tar.gz
+  command: wget http://mirror.bit.edu.cn/apache/zookeeper/zookeeper-{{ zookeeper_version }}/zookeeper-{{ zookeeper_version }}.tar.gz
   args:
     chdir: /home/hdp/soft
-    creates: zookeeper-3.3.6.tar.gz
+    creates: zookeeper-{{ zookeeper_version }}.tar.gz
   register: output_zoo
 - name: uncompress tar files - zookeeper
-  command: tar -xzvf zookeeper-3.3.6.tar.gz -C ..
+  command: tar -xzvf zookeeper-{{ zookeeper-version }}.tar.gz -C ..
   args: 
     chdir: /home/hdp/soft
   when: output_zoo.stdout.find('skip') == -1
@@ -77,13 +77,13 @@
     - /usr/app/zookeeper/logs
 
 - name: download sqoop
-  command: wget http://mirror.bit.edu.cn/apache/sqoop/1.4.6/sqoop-1.4.6.tar.gz
+  command: wget http://mirror.bit.edu.cn/apache/sqoop/{{ sqoop_version }}/sqoop-{{ sqoop_version }}.tar.gz
   args:
     chdir: /home/hdp/soft
-    creates: sqoop-1.4.6.tar.gz
+    creates: sqoop-{{ sqoop_version }}.tar.gz
   register: output_sqoop
 - name: uncompress tar files - sqoop
-  command: tar -xzvf sqoop-1.4.6.tar.gz -C ..
+  command: tar -xzvf sqoop-{{ sqoop_version }}.tar.gz -C ..
   args:
     chdir: /home/hdp/soft
   when: output_sqoop.stdout.find('skip') == -1

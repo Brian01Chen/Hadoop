@@ -11,11 +11,6 @@
   args:
     executable: /bin/bash
 
-#- name: stop hadoopd
-#  local_action: /bin/sh /home/hdp/hadoop-2.8.2/sbin/stop-all.sh
-#  async: 70 #max wait time, go next step if exceed the time
-#  poll: 5   #check the task every five second
-#  ignore_errors: yes
 
 - name: update hadoop configure files
   copy:
@@ -43,9 +38,6 @@
     - "{{ hbase_conf }}/hbase-site.xml"
     - "{{ hbase_conf }}/regionservers"
 
-#- name: restart hadoop
-#  local_action: /bin/sh /home/hdp/hadoop-2.8.2/sbin/start-all.sh
-
 
 - name: copy mysql-jdbc jar
   copy:
@@ -60,10 +52,10 @@
     force: yes 
   with_items:
     - "{{ hive_conf }}/hive-default.xml"
-    - "{{ hive_conf }}/hive-site-slaves.xml"
+    - "{{ hive_conf }}/hive-site.xml"
 
-- name: update hive-site conf
-  command: mv hive-site-slaves.xml hive-site.xml chdir={{ hive_conf }}
+#- name: update hive-site conf
+#  command: mv hive-site-slaves.xml hive-site.xml chdir={{ hive_conf }}
 
 - name: create zookeeper data folder
   file:
@@ -82,4 +74,5 @@
   register: slaves_proc
 - debug: var="slaves_proc.stdout"
 
- 
+
+

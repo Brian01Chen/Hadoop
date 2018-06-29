@@ -1,0 +1,7 @@
+
+<configuration>
+    <property>  
+        <name>hive.metastore.uris</name>  
+    <value>thrift://kvm-013874:9083</value>  
+    </property>
+</configuration>

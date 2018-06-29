@@ -1,0 +1,42 @@
+- name: update hadoop configure files
+  copy:
+      src: "{{ item }}"
+      dest: "{{ hadoop_conf }}"
+      owner: hdp
+      force: yes
+      with_items:
+      - core-site.xml
+      - hadoop-env.sh
+      - hdfs-site.xml
+      - mapred-site.xml
+      - yarn-site.xml
+      - masters
+      - slaves
+
+
+- name: update zookeep conf
+  copy:
+      src: zoo.cfg
+      dest: "{{ zoo_conf }}"
+      force: yes
+- name: update hive conf
+  copy:
+      src: "{{ item }}"
+      dest: "{{ hive_conf }}"
+      force: yes
+      with_items:
+      - hive-default.xml
+      - hive-site.xml
+      - hive-site-slaves.xml
+
+- name: update hbase configure files
+  copy:
+      src: "{{ item }}"
+      dest: "{{ hbase_conf }}"
+      owner: hdp
+      force: yes
+      with_items:
+      - hbase-env.sh
+      - hbase-site.xml
+      - regionservers
+

@@ -1,3 +1,10 @@
+hadoop_version: 2.8.4
+hive_version: 1.2.2
+hbase_version: 1.3.2.1
+zookeeper_version: 3.4.12
+sqoop_version: 1.4.6
+master_host: kvm-016175
+host_list: kvm-016174,kvm-016177
 hadoop_home: /home/hdp/{{ hadoop_version }}
 hadoop_conf: /home/hdp/hadoop-{{ hadoop_version }}/etc/hadoop
 hive_home: /home/hdp/apache-hive-{{ hive_version }}-bin
