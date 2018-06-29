@@ -115,7 +115,7 @@ fi
 
 #Hadoop variables
 export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_151
-export HADOOP_INSTALL=/home/hdp/hadoop-2.8.2
+export HADOOP_INSTALL=/home/hdp/hadoop-2.8.4
 export PATH=$PATH:$HADOOP_INSTALL/bin
 export PATH=$PATH:$HADOOP_INSTALL/sbin
 export HADOOP_MAPRED_HOME=$HADOOP_INSTALL
@@ -129,7 +129,7 @@ export HIVE_INSTALL=/home/hdp/apache-hive-1.2.2-bin
 export PATH=$PATH:$HIVE_INSTALL/bin
 
 #Hbase variables
-export HBASE_HOME=/home/hdp/hbase-1.3.1
+export HBASE_HOME=/home/hdp/hbase-1.3.2.1
 export PATH=$PATH:$HBASE_HOME/bin
 
 #Sqoop variable
