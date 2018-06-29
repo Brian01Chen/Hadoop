@@ -4,7 +4,7 @@
       dest: "{{ hadoop_conf }}"
       owner: hdp
       force: yes
-      with_items:
+  with_items:
       - core-site.xml
       - hadoop-env.sh
       - hdfs-site.xml
@@ -24,7 +24,7 @@
       src: "{{ item }}"
       dest: "{{ hive_conf }}"
       force: yes
-      with_items:
+  with_items:
       - hive-default.xml
       - hive-site.xml
       - hive-site-slaves.xml
@@ -35,7 +35,7 @@
       dest: "{{ hbase_conf }}"
       owner: hdp
       force: yes
-      with_items:
+  with_items:
       - hbase-env.sh
       - hbase-site.xml
       - regionservers
