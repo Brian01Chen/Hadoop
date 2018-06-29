@@ -36,7 +36,6 @@
       owner: hdp
       force: yes
   with_items:
-      - hbase-env.sh
       - hbase-site.xml
       - regionservers
 
