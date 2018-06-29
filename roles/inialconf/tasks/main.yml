@@ -39,3 +39,10 @@
       - hbase-site.xml
       - regionservers
 
+
+- name: cp mysql jar
+  copy:
+      src: mysql-connector-java-5.1.45-bin.jar
+      dest: "{{ hive_home }}/lib"
+      owner: hdp
+      force: yes
