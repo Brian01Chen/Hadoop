@@ -1,5 +1,5 @@
 - name: update hadoop configure files
-  copy:
+  template:
       src: "{{ item }}"
       dest: "{{ hadoop_conf }}"
       owner: hdp
@@ -13,14 +13,24 @@
       - masters
       - slaves
 
+- name: create hadoop folders
+  file:
+    name: "{{ item }}"
+    state: directory
+    force: no
+    recurse: yes
+    owner: hdp
+  with_items:
+    - /home/hdp/mydata/hdfs/namenode
+    - /home/hdp/mydata/hdfs/datanode
 
 - name: update zookeep conf
-  copy:
+  template:
       src: zoo.cfg
       dest: "{{ zoo_conf }}"
       force: yes
 - name: update hive conf
-  copy:
+  template:
       src: "{{ item }}"
       dest: "{{ hive_conf }}"
       force: yes
@@ -30,7 +40,7 @@
       - hive-site-slaves.xml
 
 - name: update hbase configure files
-  copy:
+  template:
       src: "{{ item }}"
       dest: "{{ hbase_conf }}"
       owner: hdp

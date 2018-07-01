@@ -52,6 +52,17 @@
   when: output_hbase.stdout.find('skip') == -1
   ignore_errors: yes
 
+- name: create hadoop folders
+  file:
+      name: "{{ item }}"
+      state: directory
+      force: no
+      recurse: yes
+      owner: hdp
+  with_items:
+      - /home/hdp/mydata/hdfs/namenode
+      - /home/hdp/mydata/hdfs/datanode
+
 - name: download zookeeper
   command: wget http://mirror.bit.edu.cn/apache/zookeeper/zookeeper-{{ zookeeper_version }}/zookeeper-{{ zookeeper_version }}.tar.gz
   args:
